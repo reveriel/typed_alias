@@ -3,6 +3,14 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
+#include <array>
+#include <deque>
+#include <list>
+#include <forward_list>
+#include <set>
+#include <map>
+#include <unordered_set>
+#include <unordered_map>
 
 namespace typed_alias {
 
@@ -128,4 +136,40 @@ public:
 template <typename T, typename Tag>
 using Vector = Type<std::vector<T>, Tag>;
 
-}  // namespace typed_alias
+template <typename T, size_t N, typename Tag>
+using Array = Type<std::array<T, N>, Tag>;
+
+template <typename T, typename Tag>
+using Deque = Type<std::deque<T>, Tag>;
+
+template <typename T, typename Tag>
+using List = Type<std::list<T>, Tag>;
+
+template <typename T, typename Tag>
+using ForwardList = Type<std::forward_list<T>, Tag>;
+
+template <typename T, typename Tag>
+using Set = Type<std::set<T>, Tag>;
+
+template <typename T, typename Tag>
+using MultiSet = Type<std::multiset<T>, Tag>;
+
+template <typename Key, typename T, typename Tag>
+using Map = Type<std::map<Key, T>, Tag>;
+
+template <typename Key, typename T, typename Tag>
+using MultiMap = Type<std::multimap<Key, T>, Tag>;
+
+template <typename T, typename Tag>
+using UnorderedSet = Type<std::unordered_set<T>, Tag>;
+
+template <typename T, typename Tag>
+using UnorderedMultiSet = Type<std::unordered_multiset<T>, Tag>;
+
+template <typename Key, typename T, typename Tag>
+using UnorderedMap = Type<std::unordered_map<Key, T>, Tag>;
+
+template <typename Key, typename T, typename Tag>
+using UnorderedMultiMap = Type<std::unordered_multimap<Key, T>, Tag>;
+
+} // namespace typed_alias

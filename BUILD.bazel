@@ -17,20 +17,117 @@ cc_library(
 )
 
 cc_test(
-    name = "typed_alias_test",
-    srcs = glob(["test/typed_alias/*_test.cpp"]),
+    name = "type_test",
+    srcs = ["test/typed_alias/type_test.cpp"],
     deps = [
         ":typed_alias",
         "@googletest//:gtest_main",
-        "@googletest//:gtest",
     ],
-    tags = ["coverage"],
+)
+
+cc_test(
+    name = "string_test",
+    srcs = ["test/typed_alias/string_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "vector_test",
+    srcs = ["test/typed_alias/vector_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "map_test",
+    srcs = ["test/typed_alias/map_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "set_test",
+    srcs = ["test/typed_alias/set_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
 )
 
 cc_test(
     name = "composition_way_test",
     srcs = ["test/typed_alias/composition_way_test.cpp"],
     deps = [
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "array_test",
+    srcs = ["test/typed_alias/array_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "deque_test",
+    srcs = ["test/typed_alias/deque_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "list_test",
+    srcs = ["test/typed_alias/list_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "forward_list_test",
+    srcs = ["test/typed_alias/forward_list_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "unordered_set_test",
+    srcs = ["test/typed_alias/unordered_set_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "unordered_map_test",
+    srcs = ["test/typed_alias/unordered_map_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "container_iterators_test",
+    srcs = ["test/typed_alias/container_iterators_test.cpp"],
+    deps = [
+        ":typed_alias",
         "@googletest//:gtest_main",
     ],
 )

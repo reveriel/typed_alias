@@ -132,6 +132,54 @@ TEST(TypeTest, StlVector) {
   EXPECT_TRUE(from_vec.empty());  // NOLINT: 访问移动后的对象是合法的，但可能导致 lint 警告
 }
 
+// 测试其他 STL 容器
+TEST(TypeTest, StlContainers) {
+  // Array
+  using IntArray = typed_alias::Array<int, struct IntArrayTag, 3>;
+  IntArray arr = {1, 2, 3};
+  EXPECT_EQ(arr[0], 1);
+  EXPECT_EQ(arr.size(), 3);
+
+  // Deque
+  using TaskQueue = typed_alias::Deque<std::string, struct TaskQueueTag>;
+  TaskQueue tasks{"task1", "task2"};
+  tasks.push_front("task0");
+  EXPECT_EQ(tasks.front(), "task0");
+  EXPECT_EQ(tasks.back(), "task2");
+
+  // List
+  using UserList = typed_alias::List<std::string, struct UserListTag>;
+  UserList users{"user1", "user2"};
+  users.push_front("user0");
+  EXPECT_EQ(users.front(), "user0");
+
+  // Set
+  using UniqueIds = typed_alias::Set<int, struct UniqueIdsTag>;
+  UniqueIds ids{1, 2, 3, 3};  // 重复的 3 会被忽略
+  EXPECT_EQ(ids.size(), 3);
+  EXPECT_TRUE(ids.contains(1));
+
+  // Map
+  using UserScores = typed_alias::Map<std::string, int, struct UserScoresTag>;
+  UserScores scores{{"Alice", 100}, {"Bob", 95}};
+  scores["Charlie"] = 98;
+  EXPECT_EQ(scores["Alice"], 100);
+  EXPECT_EQ(scores.size(), 3);
+
+  // UnorderedSet
+  using HashSet = typed_alias::UnorderedSet<int, struct HashSetTag>;
+  HashSet hash_set{1, 2, 3, 3};
+  EXPECT_EQ(hash_set.size(), 3);
+  EXPECT_TRUE(hash_set.contains(1));
+
+  // UnorderedMap
+  using Cache = typed_alias::UnorderedMap<std::string, int, struct CacheTag>;
+  Cache cache{{"key1", 1}, {"key2", 2}};
+  cache["key3"] = 3;
+  EXPECT_EQ(cache["key1"], 1);
+  EXPECT_EQ(cache.size(), 3);
+}
+
 // 测试大小和性能
 TEST(TypeTest, SizeAndPerformance) {
   using Email = typed_alias::String<struct EmailTag>;
