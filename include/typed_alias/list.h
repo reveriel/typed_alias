@@ -10,10 +10,18 @@ class List : public Type<std::list<T>, Tag> {
  public:
   using Base = Type<std::list<T>, Tag>;
   using Base::Base;  // 继承构造函数
-  using typename Base::iterator;
-  using typename Base::const_iterator;
-  using reverse_iterator = typename std::list<T>::reverse_iterator;
-  using const_reverse_iterator = typename std::list<T>::const_reverse_iterator;
+  using value_type = T;
+  using container_type = std::list<T>;
+  using iterator = typename container_type::iterator;
+  using const_iterator = typename container_type::const_iterator;
+  using reverse_iterator = typename container_type::reverse_iterator;
+  using const_reverse_iterator = typename container_type::const_reverse_iterator;
+  
+  // 默认构造函数
+  constexpr List() = default;
+  
+  // 初始化列表构造函数
+  constexpr List(std::initializer_list<T> init) : Base(container_type(init.begin(), init.end())) {}
 
   // 反向迭代器函数
   constexpr reverse_iterator rbegin() & noexcept { return Base::get().rbegin(); }

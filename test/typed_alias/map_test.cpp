@@ -8,7 +8,7 @@ TEST(MapTest, BasicOperations) {
   using UserScores = typed_alias::Map<std::string, int, struct UserScoresTag>;
   
   // 测试构造和插入
-  UserScores scores{{"Alice", 100}, {"Bob", 95}};
+  UserScores scores{{{"Alice", 100}, {"Bob", 95}}};
   scores["Charlie"] = 98;
   
   // 测试访问

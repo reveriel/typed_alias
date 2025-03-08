@@ -70,6 +70,15 @@ cc_test(
 )
 
 cc_test(
+    name = "composition_test",
+    srcs = ["test/typed_alias/composition_test.cpp"],
+    deps = [
+        ":typed_alias",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
     name = "array_test",
     srcs = ["test/typed_alias/array_test.cpp"],
     deps = [

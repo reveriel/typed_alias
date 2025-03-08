@@ -1,6 +1,7 @@
 #pragma once
 
 // 顺序容器
+#include "string.h"
 #include "vector.h"
 #include "array.h"
 #include "deque.h"

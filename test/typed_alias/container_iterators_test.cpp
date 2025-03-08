@@ -1,13 +1,14 @@
 #include <gtest/gtest.h>
 #include <typed_alias/array.h>
-#include <typed_alias/vector.h>
-#include <typed_alias/list.h>
-#include <typed_alias/forward_list.h>
 #include <typed_alias/deque.h>
-#include <typed_alias/set.h>
+#include <typed_alias/forward_list.h>
+#include <typed_alias/list.h>
 #include <typed_alias/map.h>
-#include <typed_alias/unordered_set.h>
+#include <typed_alias/set.h>
 #include <typed_alias/unordered_map.h>
+#include <typed_alias/unordered_set.h>
+#include <typed_alias/vector.h>
+
 #include <string>
 
 namespace {
@@ -63,7 +64,8 @@ TEST(ContainerIteratorsTest, ReverseIterators) {
   EXPECT_EQ(std::prev(map.crend())->second, 1);
 
   // MultiMap
-  typed_alias::MultiMap<std::string, int, struct MultiMapTag> mmap{{"a", 1}, {"b", 2}, {"b", 2}, {"c", 3}};
+  typed_alias::MultiMap<std::string, int, struct MultiMapTag> mmap{
+      {"a", 1}, {"b", 2}, {"b", 2}, {"c", 3}};
   EXPECT_EQ(mmap.rbegin()->second, 3);
   EXPECT_EQ(std::prev(mmap.rend())->second, 1);
   EXPECT_EQ(mmap.crbegin()->second, 3);
@@ -100,12 +102,12 @@ TEST(ContainerIteratorsTest, ForwardIterators) {
   EXPECT_NE(umapcit, umap.cend());
 
   // Unordered multimap (只有前向迭代器)
-  typed_alias::UnorderedMultiMap<std::string, int, struct UnorderedMultiMapTag> 
-      ummap{{"a", 1}, {"b", 2}, {"b", 2}};
+  typed_alias::UnorderedMultiMap<std::string, int, struct UnorderedMultiMapTag> ummap{
+      {"a", 1}, {"b", 2}, {"b", 2}};
   auto ummapit = ummap.begin();
   EXPECT_NE(ummapit, ummap.end());
   auto ummapcit = ummap.cbegin();
   EXPECT_NE(ummapcit, ummap.cend());
 }
 
-} // namespace
+}  // namespace

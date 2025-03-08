@@ -15,6 +15,7 @@ class Vector : public Type<std::vector<T>, Tag> {
   using reverse_iterator = typename std::vector<T>::reverse_iterator;
   using const_reverse_iterator = typename std::vector<T>::const_reverse_iterator;
 
+  constexpr Vector(std::initializer_list<T> init) : Base(std::vector<T>(init)) {}
   // 反向迭代器函数
   constexpr reverse_iterator rbegin() & noexcept { return Base::get().rbegin(); }
   constexpr const_reverse_iterator rbegin() const& noexcept { return Base::get().rbegin(); }
