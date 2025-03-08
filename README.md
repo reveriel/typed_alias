@@ -1,239 +1,135 @@
-# Bazel C++ Project Template
+# Typed Alias
 
 [![CI](https://github.com/reveriel/bazel_template/actions/workflows/ci.yml/badge.svg)](https://github.com/reveriel/bazel_template/actions)
-[![codecov](https://codecov.io/gh/reveriel/bazel_template/branch/main/graph/badge.svg)](https://codecov.io/gh/reveriel/bazel_template)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
-[![Bazel](https://img.shields.io/badge/Build%20with-Bazel-43A047.svg)](https://bazel.build/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/reveriel/bazel_template/pulls)
-[![Code Style](https://img.shields.io/badge/code%20style-clang--format-blue.svg)](https://clang.llvm.org/docs/ClangFormat.html)
 
-A modern C++ project template using Bazel build system, featuring comprehensive testing, code coverage, and development tools integration.
+`typed_alias` 是一个基于继承的强类型别名库，它提供了一种类型安全的方式来创建具有特定语义的类型。
 
-> **Note**: To make the badges work in your fork:
-> 1. Replace "reveriel" in badge URLs with your GitHub username
-> 2. Enable GitHub Actions in your repository
-> 3. Set up [Codecov](https://codecov.io) for your repository:
->    - Sign up on Codecov using your GitHub account
->    - Add your repository to Codecov
->    - Add `CODECOV_TOKEN` to your repository secrets in GitHub
->    - The token is required for the Codecov GitHub Action v5
-> 4. The CI workflow will automatically upload coverage reports to Codecov
+## 特性
 
-## Features
+- 基于继承的实现，零运行时开销
+- 完全类型安全，防止类型混淆
+- 支持所有 STL 容器
+- 支持完整的成员函数访问
+- 支持移动语义
+- 头文件实现，易于集成
 
-- Modern C++17 support
-- Bazel build system with Bzlmod dependency management
-- GoogleTest integration for unit testing
-- Code coverage reporting with LCOV
-- Multiple build configurations (Debug/Release)
-- Sanitizer support (ASan, TSan, UBSan)
-- VSCode DevContainer configuration
-- GitHub Actions CI integration
-- Clang tooling support
+## 性能特性
 
-## Prerequisites
+### 零开销抽象
 
-- Docker and VSCode with Remote-Containers extension (for DevContainer)
-- Or locally:
-  - Bazel 6.0+ (or Bazelisk)
-  - C++17 compatible compiler
-  - Python 3.x (for coverage report viewing)
-  - LCOV (for coverage report generation)
+基于继承的实现（`Type<T, Tag>`）保证了零运行时开销：
 
-## Quick Start with DevContainer
+1. **大小优化**：
+   - 利用空基类优化 (EBCO)
+   - `sizeof(Type<T, Tag>) == sizeof(T)`
+   - 内存对齐与底层类型完全相同
 
-1. Install Docker and VSCode with Remote-Containers extension
-2. Open this project in VSCode
-3. Click "Reopen in Container" when prompted
-4. Wait for the container to build and initialize
+2. **构造函数优化**：
+   - 直接继承底层类型的构造函数
+   - 无额外的函数调用或数据拷贝
+   ```cpp
+   Email email{"abc"};  // 与 std::string{"abc"} 生成相同的机器码
+   ```
 
-## Build Instructions
+3. **编译期开销**：
+   - 仅在编译期进行类型检查
+   - 模板实例化和类型元数据生成
+   - 不影响运行时性能
 
-### Basic Build Commands
+### 继承 vs 组合
+
+库提供了两种实现方式：
+
+1. **基于继承** (`Type<T, Tag>`)：
+   - 零运行时开销
+   - 利用空基类优化
+   - 直接继承成员函数
+   - 推荐用于追求性能的场景
+
+2. **基于组合** (`Wrapper<T, Tag>`)：
+   - 更严格的封装
+   - 显式的接口转发
+   - 轻微的运行时开销
+   - 适用于需要自定义行为的场景
+
+## 使用示例
+
+```cpp
+// 创建一个 Email 类型
+using Email = typed_alias::String<struct EmailTag>;
+
+// 使用示例
+Email email{"user@domain.com"};
+EXPECT_FALSE(email.empty());
+
+// 支持与底层类型的转换
+std::string str = "user@domain.com";
+Email email2(std::move(str));
+
+// 支持 STL 容器
+using Namespace = typed_alias::Vector<std::string, struct NamespaceTag>;
+Namespace ns{"item1", "item2", "item3"};
+ns.push_back("item4");
+```
+
+## 预定义类型
+
+- `typed_alias::String<Tag>`: 基于 `std::string` 的强类型
+- `typed_alias::Vector<T, Tag>`: 基于 `std::vector<T>` 的强类型
+
+## 创建自定义类型
+
+```cpp
+// 为任意类型创建强类型别名
+using UserId = typed_alias::Type<int, struct UserIdTag>;
+using Score = typed_alias::Type<double, struct ScoreTag>;
+```
+
+## 构建和测试
+
+### 构建
 
 ```bash
-# Build everything
+# 构建所有目标
 bazel build //...
 
-# Build and run main binary
-bazel run //:main
-
-# Generate compile_commands.json for IDE support
-bazel run :refresh_compile_commands
-```
-
-### Build Configurations
-
-```bash
-# Debug build
+# Debug 构建
 bazel build --config=debug //...
 
-# Release build
+# Release 构建
 bazel build --config=release //...
-
-# Build with sanitizers
-bazel build --config=asan //...  # Address Sanitizer
-bazel build --config=tsan //...  # Thread Sanitizer
-bazel build --config=ubsan //... # Undefined Behavior Sanitizer
 ```
 
-## Testing
-
-The project uses GoogleTest for unit testing. Tests are located in the `test/` directory.
+### 测试
 
 ```bash
-# Run all tests
+# 运行所有测试
 bazel test //...
 
-# Run specific test
-bazel test //:calculator_test
+# 运行特定测试
+bazel test //test/typed_alias:typed_alias_test
 
-# Run tests with sanitizers
-bazel test --config=asan //...
-bazel test --config=tsan //...
-bazel test --config=ubsan //...
+# 使用 sanitizer 运行测试
+bazel test --config=asan //...  # Address Sanitizer
+bazel test --config=tsan //...  # Thread Sanitizer
+bazel test --config=ubsan //... # Undefined Behavior Sanitizer
 ```
 
-## Code Coverage
+## 开发工具
 
-Code coverage is automatically generated and uploaded to Codecov during CI runs. To generate coverage reports locally:
+### 生成 compile_commands.json
+
+为了获得更好的 IDE 支持，你可以生成 `compile_commands.json`：
 
 ```bash
-# Generate coverage report for all tests
-bazel coverage //...
-
-# Generate HTML report
-genhtml "$(bazel info output_path)/_coverage/_coverage_report.dat" -o coverage_report
-
-# View the report (starts a local server)
-cd coverage_report && python3 -m http.server 8000
+bazel run //:refresh_compile_commands
 ```
 
-Access the coverage report at `http://localhost:8000` in your web browser.
+### 代码格式化
 
-The coverage configuration:
-- Automatically runs during CI with GitHub Actions
-- Uses Codecov Action v5 for report uploads
-- Focuses on project code using `--instrumentation_filter`
-- Excludes external dependencies
-- Generates reports in LCOV format
-- Shows line, branch, and function coverage
+使用 clang-format 格式化代码：
 
-## Project Structure
-
-```
-.
-├── .devcontainer/        # Development container configuration
-├── .github/              # GitHub Actions workflows
-├── include/              # Public headers
-│   └── calculator/       # Namespace-based organization
-├── src/                  # Source files
-│   └── calculator/       # Implementation files
-├── test/                 # Test files
-│   └── calculator/       # Test implementations
-├── BUILD.bazel          # Main build rules
-├── MODULE.bazel         # Bazel module definition
-└── .bazelrc            # Bazel configuration
-```
-
-## Development Tools
-
-### VSCode Integration
-
-The DevContainer comes pre-configured with:
-- C++ extension
-- Bazel extension
-- Clang-format
-- Clang-tidy
-- LLDB debugger
-
-### Available Commands
-
-- Build: `Ctrl+Shift+B` or `CMD+Shift+B`
-- Run Tests: Via Testing sidebar
-- Debug: F5 (after selecting a target)
-
-### Code Formatting
-
-The project uses clang-format for code formatting. Format your code with:
 ```bash
 find . -name '*.cpp' -o -name '*.h' | xargs clang-format -i
-```
-
-## Debugging
-
-The project is configured for debugging with VSCode. Two debug configurations are provided:
-- "Debug Main" for debugging the main program
-- "Debug Tests" for debugging the test suite
-
-### Prerequisites
-- GDB (installed in DevContainer)
-- VSCode C/C++ extension
-- VSCode Bazel extension
-
-### Starting a Debug Session
-
-1. Set breakpoints by clicking on the line numbers in your source files
-2. Press F5 or select "Run and Debug" from the sidebar
-3. Choose either "Debug Main" or "Debug Tests" from the dropdown
-4. The debugger will stop at your breakpoints
-
-### Available Debug Commands
-- F5: Continue
-- F10: Step Over
-- F11: Step Into
-- Shift+F11: Step Out
-- Ctrl+Shift+F5: Restart
-- Shift+F5: Stop
-
-### Debug Features
-- Variable inspection in the Debug sidebar
-- Watch expressions
-- Call stack viewing
-- Memory inspection
-- Breakpoint conditions
-- Debug console for GDB commands
-
-### Debug Configurations
-The `.vscode/launch.json` includes:
-```json
-{
-    "configurations": [
-        {
-            "name": "Debug Main",
-            "program": "${workspaceFolder}/bazel-bin/main",
-            // Debug configuration for main program
-        },
-        {
-            "name": "Debug Tests",
-            "program": "${workspaceFolder}/bazel-bin/calculator_test",
-            // Debug configuration for tests
-        }
-    ]
-}
-```
-
-Both configurations automatically build with debug symbols before starting the debug session.
-
-## Continuous Integration
-
-GitHub Actions automatically:
-- Builds the project in Debug and Release modes
-- Runs all tests
-- Performs sanitizer checks
-- Generates coverage reports
-- Uploads coverage to Codecov using Codecov Action v5
-- Uses latest GitHub Actions including:
-  - actions/checkout@v3
-  - actions/upload-artifact@v4
-  - codecov/codecov-action@v5
-
-The CI pipeline is configured to fail if:
-- Any tests fail
-- Coverage upload fails
-- Build errors occur
-
-## License
-
-[Add your license here]

@@ -9,29 +9,30 @@ exports_files([
 ])
 
 cc_library(
-    name = "calculator",
-    srcs = glob(["src/calculator/*.cpp"]),
-    hdrs = glob(["include/calculator/*.h"]),
+    name = "typed_alias",
+    srcs = glob(["src/typed_alias/*.cpp"], allow_empty = True),
+    hdrs = glob(["include/typed_alias/*.h"]),
     includes = ["include"],
     visibility = ["//visibility:public"],
 )
 
-cc_binary(
-    name = "main",
-    srcs = ["src/main.cpp"],
+cc_test(
+    name = "typed_alias_test",
+    srcs = glob(["test/typed_alias/*_test.cpp"]),
     deps = [
-        ":calculator",
+        ":typed_alias",
+        "@googletest//:gtest_main",
+        "@googletest//:gtest",
     ],
+    tags = ["coverage"],
 )
 
 cc_test(
-    name = "calculator_test",
-    srcs = glob(["test/calculator/*.cpp"]),
+    name = "composition_way_test",
+    srcs = ["test/typed_alias/composition_way_test.cpp"],
     deps = [
-        ":calculator",
         "@googletest//:gtest_main",
     ],
-    tags = ["coverage"],
 )
 
 refresh_compile_commands(
