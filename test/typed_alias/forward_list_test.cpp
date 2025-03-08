@@ -1,12 +1,13 @@
 #include <gtest/gtest.h>
 #include <typed_alias/forward_list.h>
+
 #include <string>
 
 namespace {
 
 TEST(ForwardListTest, BasicOperations) {
   using Queue = typed_alias::ForwardList<std::string, struct QueueTag>;
-  
+
   // 测试构造
   Queue empty;
   EXPECT_TRUE(empty.empty());
@@ -41,7 +42,7 @@ TEST(ForwardListTest, Insert) {
   // 测试删除
   pos = queue.begin();
   queue.erase_after(pos);  // 删除 "item2"
-  
+
   pos = queue.begin();
   EXPECT_EQ(*pos++, "item1");
   EXPECT_EQ(*pos++, "inserted");
@@ -75,4 +76,4 @@ TEST(ForwardListTest, Operations) {
   EXPECT_EQ(*it++, "item1");
 }
 
-} // namespace
+}  // namespace

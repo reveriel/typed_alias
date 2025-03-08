@@ -1,16 +1,17 @@
 #include <gtest/gtest.h>
 #include <typed_alias/map.h>
+
 #include <string>
 
 namespace {
 
 TEST(MapTest, BasicOperations) {
   using UserScores = typed_alias::Map<std::string, int, struct UserScoresTag>;
-  
+
   // 测试构造和插入
   UserScores scores{{{"Alice", 100}, {"Bob", 95}}};
   scores["Charlie"] = 98;
-  
+
   // 测试访问
   EXPECT_EQ(scores["Alice"], 100);
   EXPECT_EQ(scores.at("Bob"), 95);
@@ -29,7 +30,7 @@ TEST(MapTest, BasicOperations) {
 
 TEST(MultiMapTest, BasicOperations) {
   using Grades = typed_alias::MultiMap<std::string, int, struct GradesTag>;
-  
+
   // 测试多值插入
   Grades grades;
   grades.insert({"Alice", 95});
@@ -48,4 +49,4 @@ TEST(MultiMapTest, BasicOperations) {
   EXPECT_EQ(sum, 193);
 }
 
-} // namespace
+}  // namespace

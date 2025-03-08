@@ -43,7 +43,7 @@ TEST(TypeTest, InheritanceApproach) {
 // 测试 STL 容器使用
 TEST(TypeTest, StlVector) {
   using Namespace = typed_alias::Vector<std::string, struct NamespaceTag>;
-  
+
   // 测试构造函数
   Namespace empty;
   EXPECT_TRUE(empty.empty());
@@ -52,7 +52,7 @@ TEST(TypeTest, StlVector) {
   // 测试初始化列表构造
   Namespace ns{"item1", "item2", "item3"};
   EXPECT_EQ(ns.size(), 3);
-  
+
   // 测试基本访问
   EXPECT_EQ(ns[0], "item1");
   EXPECT_EQ(ns.at(1), "item2");
@@ -183,7 +183,7 @@ TEST(TypeTest, StlContainers) {
 // 测试大小和性能
 TEST(TypeTest, SizeAndPerformance) {
   using Email = typed_alias::String<struct EmailTag>;
-  
+
   // 测试大小相等
   EXPECT_EQ(sizeof(Email), sizeof(std::string));
 

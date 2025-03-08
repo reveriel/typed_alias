@@ -40,8 +40,6 @@ public:
   // 初始化列表构造函数
   constexpr MultiSet(std::initializer_list<T> init)
       : Base(container_type(init.begin(), init.end())) {}
-
-
 };
 
 }  // namespace typed_alias

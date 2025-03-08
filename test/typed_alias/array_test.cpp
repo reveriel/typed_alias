@@ -1,16 +1,17 @@
 #include <gtest/gtest.h>
 #include <typed_alias/array.h>
+
 #include <algorithm>
 
 namespace {
 
 TEST(ArrayTest, BasicOperations) {
   using IntArray = typed_alias::Array<int, 3, struct IntArrayTag>;
-  
+
   // 测试构造
   IntArray arr{1, 2, 3};  // 使用列表初始化
   EXPECT_EQ(arr.size(), 3);
-  
+
   // 测试访问
   EXPECT_EQ(arr[0], 1);
   EXPECT_EQ(arr.at(1), 2);
@@ -35,13 +36,13 @@ TEST(ArrayTest, BasicOperations) {
 TEST(ArrayTest, Algorithms) {
   using IntArray = typed_alias::Array<int, 3, struct IntArrayTag>;
   IntArray arr{3, 1, 2};  // 使用列表初始化
-  
+
   // 测试排序
   std::sort(arr.begin(), arr.end());
   EXPECT_EQ(arr[0], 1);
   EXPECT_EQ(arr[1], 2);
   EXPECT_EQ(arr[2], 3);
-  
+
   // 测试查找
   auto it = std::find(arr.begin(), arr.end(), 2);
   EXPECT_NE(it, arr.end());
@@ -102,4 +103,4 @@ TEST(ArrayTest, Iterators) {
   EXPECT_FALSE(arr.begin() < arr.begin());
 }
 
-} // namespace
+}  // namespace

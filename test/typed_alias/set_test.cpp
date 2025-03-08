@@ -5,11 +5,11 @@ namespace {
 
 TEST(SetTest, BasicOperations) {
   using UniqueIds = typed_alias::Set<int, struct UniqueIdsTag>;
-  
+
   // 测试插入
   UniqueIds ids{1, 2, 3, 3};  // 重复的 3 会被忽略
   EXPECT_EQ(ids.size(), 3);
-  
+
   // 测试查找
   EXPECT_NE(ids.find(1), ids.end());  // 使用 find 代替 contains
   EXPECT_EQ(ids.find(4), ids.end());
@@ -30,7 +30,7 @@ TEST(SetTest, Iterators) {
 
   // begin/end
   auto it = ids.begin();
-  EXPECT_EQ(*it, 1);  // 最小值
+  EXPECT_EQ(*it, 1);             // 最小值
   EXPECT_EQ(*(--ids.end()), 5);  // 最大值
 
   // const begin/end
@@ -41,7 +41,7 @@ TEST(SetTest, Iterators) {
 
   // rbegin/rend
   auto rit = ids.rbegin();
-  EXPECT_EQ(*rit, 5);  // 最大值
+  EXPECT_EQ(*rit, 5);             // 最大值
   EXPECT_EQ(*(--ids.rend()), 1);  // 最小值
 
   // cbegin/cend
@@ -72,14 +72,14 @@ TEST(SetTest, Iterators) {
 
 TEST(MultiSetTest, BasicOperations) {
   using Scores = typed_alias::MultiSet<int, struct ScoresTag>;
-  
+
   // 测试多值插入
   Scores scores{95, 98, 95, 92};
   EXPECT_EQ(scores.size(), 4);
-  
+
   // 测试计数
   EXPECT_EQ(scores.count(95), 2);
-  
+
   // 测试范围
   auto [begin, end] = scores.equal_range(95);
   int count = 0;
@@ -89,4 +89,4 @@ TEST(MultiSetTest, BasicOperations) {
   EXPECT_EQ(count, 2);
 }
 
-} // namespace
+}  // namespace

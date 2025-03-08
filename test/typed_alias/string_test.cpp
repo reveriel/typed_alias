@@ -5,7 +5,7 @@ namespace {
 
 TEST(StringTest, BasicOperations) {
   using Email = typed_alias::String<struct EmailTag>;
-  
+
   // 测试构造函数
   Email email{"user@domain.com"};
   EXPECT_FALSE(email.empty());
@@ -14,7 +14,7 @@ TEST(StringTest, BasicOperations) {
   // 测试字符串操作
   email += ".cn";
   EXPECT_EQ(email, "user@domain.com.cn");
-  
+
   // 测试与 std::string 互操作
   std::string str = "other@domain.com";
   Email other(str);
@@ -28,7 +28,7 @@ TEST(StringTest, BasicOperations) {
 
 TEST(StringTest, Conversion) {
   using Email = typed_alias::String<struct EmailTag>;
-  
+
   // 从字符串构造
   std::string str = "test@example.com";
   Email email(str);
@@ -45,4 +45,4 @@ TEST(StringTest, Conversion) {
   EXPECT_TRUE(email.empty());  // NOLINT
 }
 
-} // namespace
+}  // namespace

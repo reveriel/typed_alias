@@ -1,14 +1,15 @@
 #include <gtest/gtest.h>
 #include <typed_alias/unordered_set.h>
+
+#include <algorithm>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 namespace {
 
 TEST(UnorderedSetTest, BasicOperations) {
   using HashSet = typed_alias::UnorderedSet<int, struct HashSetTag>;
-  
+
   // 测试构造和插入
   HashSet set{1, 2, 3, 3};  // 重复的 3 会被忽略
   EXPECT_EQ(set.size(), 3);
@@ -28,7 +29,7 @@ TEST(UnorderedSetTest, BasicOperations) {
 TEST(UnorderedSetTest, Buckets) {
   using HashSet = typed_alias::UnorderedSet<int, struct HashSetTag>;
   HashSet set;
-  
+
   // 测试桶接口
   set.reserve(10);
   EXPECT_GE(set.bucket_count(), 10);
@@ -51,7 +52,7 @@ TEST(UnorderedSetTest, Iterators) {
 
   // begin/end
   EXPECT_EQ(std::distance(set.begin(), set.end()), 5);
-  
+
   // 测试迭代器遍历
   std::vector<int> values;
   for (auto it = set.begin(); it != set.end(); ++it) {
@@ -91,11 +92,11 @@ TEST(UnorderedSetTest, Iterators) {
 
 TEST(UnorderedMultiSetTest, BasicOperations) {
   using MultiSet = typed_alias::UnorderedMultiSet<int, struct MultiSetTag>;
-  
+
   // 测试多值插入
   MultiSet set{1, 2, 2, 3, 3, 3};
   EXPECT_EQ(set.size(), 6);
-  
+
   // 测试计数
   EXPECT_EQ(set.count(1), 1);
   EXPECT_EQ(set.count(2), 2);
@@ -110,4 +111,4 @@ TEST(UnorderedMultiSetTest, BasicOperations) {
   EXPECT_EQ(count, 3);
 }
 
-} // namespace
+}  // namespace

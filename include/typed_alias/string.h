@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include "type.h"
 
 namespace typed_alias {
@@ -43,4 +44,4 @@ public:
 template <typename Tag>
 using String = Type<std::string, Tag>;
 
-} // namespace typed_alias
+}  // namespace typed_alias

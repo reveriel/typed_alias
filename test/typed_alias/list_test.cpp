@@ -1,12 +1,13 @@
 #include <gtest/gtest.h>
 #include <typed_alias/list.h>
+
 #include <string>
 
 namespace {
 
 TEST(ListTest, BasicOperations) {
   using UserList = typed_alias::List<std::string, struct UserListTag>;
-  
+
   // 测试构造
   UserList empty;
   EXPECT_TRUE(empty.empty());
@@ -66,9 +67,9 @@ TEST(ListTest, Sort) {
   // 测试去重
   users.push_back("user2");
   users.push_back("user2");
-  users.sort();  // 先排序，让重复元素相邻
+  users.sort();    // 先排序，让重复元素相邻
   users.unique();  // 然后去重
   EXPECT_EQ(users.size(), 3);
 }
 
-} // namespace
+}  // namespace

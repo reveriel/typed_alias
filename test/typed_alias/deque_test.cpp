@@ -1,12 +1,13 @@
 #include <gtest/gtest.h>
 #include <typed_alias/deque.h>
+
 #include <string>
 
 namespace {
 
 TEST(DequeTest, BasicOperations) {
   using TaskQueue = typed_alias::Deque<std::string, struct TaskQueueTag>;
-  
+
   // 测试构造
   TaskQueue empty;
   EXPECT_TRUE(empty.empty());
@@ -52,4 +53,4 @@ TEST(DequeTest, RandomAccess) {
   EXPECT_EQ(tasks.size(), 4);
 }
 
-} // namespace
+}  // namespace

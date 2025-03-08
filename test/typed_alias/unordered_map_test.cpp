@@ -1,16 +1,17 @@
 #include <gtest/gtest.h>
 #include <typed_alias/unordered_map.h>
+
 #include <string>
 
 namespace {
 
 TEST(UnorderedMapTest, BasicOperations) {
   using Cache = typed_alias::UnorderedMap<std::string, int, struct CacheTag>;
-  
+
   // 测试构造和插入
   Cache cache{{"key1", 1}, {"key2", 2}};
   cache["key3"] = 3;
-  
+
   // 测试访问
   EXPECT_EQ(cache["key1"], 1);
   EXPECT_EQ(cache.at("key2"), 2);
@@ -30,7 +31,7 @@ TEST(UnorderedMapTest, BasicOperations) {
 TEST(UnorderedMapTest, Buckets) {
   using Cache = typed_alias::UnorderedMap<std::string, int, struct CacheTag>;
   Cache cache;
-  
+
   // 测试桶接口
   cache.reserve(10);
   EXPECT_GE(cache.bucket_count(), 10);
@@ -49,13 +50,13 @@ TEST(UnorderedMapTest, Buckets) {
 
 TEST(UnorderedMultiMapTest, BasicOperations) {
   using MultiCache = typed_alias::UnorderedMultiMap<std::string, int, struct MultiCacheTag>;
-  
+
   // 测试多值插入
   MultiCache cache;
   cache.insert({"key1", 1});
   cache.insert({"key1", 11});
   cache.insert({"key2", 2});
-  
+
   // 测试计数和范围
   EXPECT_EQ(cache.count("key1"), 2);
   EXPECT_EQ(cache.count("key2"), 1);
@@ -71,4 +72,4 @@ TEST(UnorderedMultiMapTest, BasicOperations) {
   EXPECT_TRUE(std::find(values.begin(), values.end(), 11) != values.end());
 }
 
-} // namespace
+}  // namespace

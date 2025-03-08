@@ -1,12 +1,13 @@
 #include <gtest/gtest.h>
 #include <typed_alias/vector.h>
+
 #include <string>
 
 namespace {
 
 TEST(VectorTest, BasicOperations) {
   using Namespace = typed_alias::Vector<std::string, struct NamespaceTag>;
-  
+
   // 测试构造函数
   Namespace empty;
   EXPECT_TRUE(empty.empty());
@@ -15,7 +16,7 @@ TEST(VectorTest, BasicOperations) {
   // 测试初始化列表构造
   Namespace ns{"item1", "item2", "item3"};
   EXPECT_EQ(ns.size(), 3);
-  
+
   // 测试基本访问
   EXPECT_EQ(ns[0], "item1");
   EXPECT_EQ(ns.at(1), "item2");
@@ -110,14 +111,14 @@ TEST(VectorTest, Iterators) {
 
 TEST(VectorTest, Comparison) {
   using Namespace = typed_alias::Vector<std::string, struct NamespaceTag>;
-  
+
   Namespace ns1{"a", "b"};
   Namespace ns2 = ns1;  // 应该可以拷贝
   EXPECT_EQ(ns1, ns2);
-  
+
   ns2.push_back("c");
   EXPECT_NE(ns1, ns2);
   EXPECT_LT(ns1, ns2);
 }
 
-} // namespace
+}  // namespace
