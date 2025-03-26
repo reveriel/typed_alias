@@ -19,4 +19,14 @@ TEST(TypeTest, SizeAndPerformance) {
   EXPECT_EQ(std::is_trivially_copyable_v<Email>, std::is_trivially_copyable_v<std::string>);
 }
 
+// 测试基本类型
+TEST(TypeTest, BasicTypeInt) {
+  using UserId = typed_alias::Type<int, struct UserIdTag>;
+  UserId id = 123;
+  EXPECT_EQ(id.get(), 123);
+
+
+}
+
+
 }  // namespace
